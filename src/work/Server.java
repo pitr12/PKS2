@@ -18,13 +18,22 @@ public class Server {
 	    DatagramSocket sk;
 
 	    sk = new DatagramSocket(PORT);
-	    System.out.println("Server started");
 	    while (true) {
-	    	
-	      sk.receive(dgp);
+	    	String message = "";
+	    	int fragment_count = 1;
+	    	while(true){
+	    		sk.receive(dgp);
+	    		String small_message = new String(dgp.getData(), 1, dgp.getLength()-1);
+	    		message = message + small_message;
+	    		String head = new String(dgp.getData(), 0, 1);
+	    		if("1".equals(head)){
+	    			message = message + " (fragment count: " +Integer.toString(fragment_count) + " )";
+	    			break;
+	    		}
+	    		fragment_count++;	    	}
 	      
 	      SimpleDateFormat fmt = new SimpleDateFormat("HH:mm:ss");
-	      String rcvd = fmt.format(new Date()) + ": "+ new String(dgp.getData(), 0, dgp.getLength()) + "\n";
+	      String rcvd = fmt.format(new Date()) + ": "+ message + "\n";
 	     
 	      UI.textPane.appendText(rcvd, "s");
 	    }

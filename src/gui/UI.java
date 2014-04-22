@@ -27,14 +27,21 @@ import javax.swing.JScrollPane;
 
 import work.Client;
 import work.Server;
+import javax.swing.JTextField;
 
 public class UI extends JFrame {
 
 	private JPanel contentPane;
-	private static UI frame;
+	public static UI frame;
 	public static JButton SendMessage;
 	public static JTextPane textPane_down;
 	public static AppendingTextPane textPane;
+	public static JTextField ipAdress;
+	public static JTextField fragmentSize;
+	public static JLabel lblIpAddress;
+	public static JLabel lblFragmentSize;
+	public static Thread one;
+	public static Thread two;
 
 	/**
 	 * Launch the application.
@@ -110,19 +117,45 @@ public class UI extends JFrame {
 		textPane.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		textPane_down.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		
+		lblIpAddress = new JLabel("IP Address:");
+		lblIpAddress.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		
+		
+		ipAdress = new JTextField();
+		ipAdress.setColumns(10);
+		ipAdress.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		
+		lblFragmentSize = new JLabel("Fragment size:");
+		lblFragmentSize.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		
+		fragmentSize = new JTextField();
+		fragmentSize.setColumns(10);
+		fragmentSize.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		
+		ipAdress.setVisible(false);
+		fragmentSize.setVisible(false);
+		lblFragmentSize.setVisible(false);
+		lblIpAddress.setVisible(false);
+		
 		
 		/**
 		 * run Server*/
 		mntmServer.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e)
-					{					
+					{	
+						if(one != null && one.isAlive())
+							one.stop();
 						frame.setTitle("Server");
 						SendMessage.setVisible(false);
 						scrollPane_down.setVisible(false);
+						ipAdress.setVisible(false);
+						fragmentSize.setVisible(false);
+						lblFragmentSize.setVisible(false);
+						lblIpAddress.setVisible(false);
 						textPane.setText("");
 						
-						Thread two = new Thread() {
+						two = new Thread() {
 						    public void run() {
 						        try {
 						            Server.runServer();
@@ -142,14 +175,20 @@ public class UI extends JFrame {
 		mntmClient.addActionListener(
 				new ActionListener(){
 					public void actionPerformed(ActionEvent e)
-					{					
+					{	
+						if(two != null && two.isAlive())
+							two.stop();
 						frame.setTitle("Client");
 						SendMessage.setVisible(true);
 						textPane.setText("");
 						textPane_down.setText("");
 						scrollPane_down.setVisible(true);
+						ipAdress.setVisible(true);
+						fragmentSize.setVisible(true);
+						lblFragmentSize.setVisible(true);
+						lblIpAddress.setVisible(true);
 
-						Thread one = new Thread() {
+						one = new Thread() {
 						    public void run() {
 						        try {
 						            Client.runClient();
@@ -167,20 +206,25 @@ public class UI extends JFrame {
 
 		/**
 		 * Layout options*/
+		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(589)
-					.addComponent(SendMessage, GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
-					.addGap(627))
-				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 1527, Short.MAX_VALUE)
-					.addContainerGap())
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(scrollPane_down, GroupLayout.DEFAULT_SIZE, 1527, Short.MAX_VALUE)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 1519, Short.MAX_VALUE)
+						.addComponent(scrollPane_down, GroupLayout.DEFAULT_SIZE, 1519, Short.MAX_VALUE)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(SendMessage, GroupLayout.PREFERRED_SIZE, 345, GroupLayout.PREFERRED_SIZE)
+							.addGap(83)
+							.addComponent(lblIpAddress, GroupLayout.PREFERRED_SIZE, 141, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(ipAdress, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)
+							.addGap(93)
+							.addComponent(lblFragmentSize, GroupLayout.PREFERRED_SIZE, 178, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(fragmentSize, GroupLayout.PREFERRED_SIZE, 201, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
@@ -189,9 +233,17 @@ public class UI extends JFrame {
 					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
 					.addGap(18)
 					.addComponent(scrollPane_down, GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(SendMessage, GroupLayout.PREFERRED_SIZE, 66, GroupLayout.PREFERRED_SIZE)
-					.addGap(9))
+					.addGap(14)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(SendMessage, GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(20)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(ipAdress, GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+								.addComponent(lblIpAddress, GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+								.addComponent(lblFragmentSize, GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+								.addComponent(fragmentSize, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE))))
+					.addGap(12))
 		);
 		
 		contentPane.setLayout(gl_contentPane);
