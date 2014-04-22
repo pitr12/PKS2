@@ -24,6 +24,8 @@ public class Client {
 	    socket = new DatagramSocket();
 	    buffer = new byte[10000];
 	      
+	    /**
+	     * action after button click - send message*/
 	      UI.SendMessage.addActionListener(
 					new ActionListener(){
 						public void actionPerformed(ActionEvent e)
@@ -32,6 +34,8 @@ public class Client {
 							String msg = UI.textPane_down.getText();
 							
 							
+							/**
+							 * chceck hostAdress and fragment size*/
 								try {
 									hostAddress = InetAddress.getByName(UI.ipAdress.getText());
 								} catch (UnknownHostException e2) {
@@ -45,7 +49,7 @@ public class Client {
 							
 							
 							/**
-							 * POP UP windows*/
+							 * POP UP windows - to enter missing HostAdress or fragment size*/
 							if("".equals(UI.ipAdress.getText())){
 								String adress = JOptionPane.showInputDialog(UI.frame,"Enter Host IP Adress",null);
 								try {
@@ -66,6 +70,8 @@ public class Client {
 							buffer = msg.getBytes();	
 							int fragment_count = 1;
 							
+							/**
+							 * send message*/
 							if(buffer.length > 0){
 								if(buffer.length > fragment_size){
 									fragment_count = (int)Math.ceil((double)buffer.length/(double)(fragment_size-1));
@@ -96,6 +102,8 @@ public class Client {
 								if(!"".equals(msg))
 									msg = fmt.format(new Date()) + ": "+ msg;
 								
+								/**
+								 * display message*/
 								UI.textPane.appendText(msg, "c");
 								String count = " (fragment count: " +Integer.toString(fragment_count) + " )\n\n";
 							      UI.textPane.appendText(count, "b");
@@ -105,6 +113,9 @@ public class Client {
 					}
 			);
 	  }
+	
+	/**
+	 * fragment message*/
 	public static String[] fragmentMessage(String msg, int f_c, int f_length){
 		String [] messages = new String[f_c];
 		for(int i=0; i<f_c; i++){
