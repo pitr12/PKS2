@@ -94,9 +94,11 @@ public class Client {
 								
 								
 								if(!"".equals(msg))
-									msg = fmt.format(new Date()) + ": "+ msg + " (fragment count: " +fragment_count + " ) \n";
+									msg = fmt.format(new Date()) + ": "+ msg;
 								
 								UI.textPane.appendText(msg, "c");
+								String count = " (fragment count: " +Integer.toString(fragment_count) + " )\n\n";
+							      UI.textPane.appendText(count, "b");
 								UI.textPane_down.setText("");
 							}
 						}

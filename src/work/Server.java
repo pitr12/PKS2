@@ -27,15 +27,15 @@ public class Server {
 	    		message = message + small_message;
 	    		String head = new String(dgp.getData(), 0, 1);
 	    		if("1".equals(head)){
-	    			message = message + " (fragment count: " +Integer.toString(fragment_count) + " )";
 	    			break;
 	    		}
 	    		fragment_count++;	    	}
 	      
 	      SimpleDateFormat fmt = new SimpleDateFormat("HH:mm:ss");
-	      String rcvd = fmt.format(new Date()) + ": "+ message + "\n";
-	     
+	      String rcvd = fmt.format(new Date()) + ": "+ message;
 	      UI.textPane.appendText(rcvd, "s");
+	      String count = " (fragment count: " +Integer.toString(fragment_count) + " )\n\n";
+	      UI.textPane.appendText(count, "b");
 	    }
 	    }
 }

@@ -22,12 +22,12 @@ public class AppendingTextPane extends JTextPane {
 	  // Appends text to the document and ensure that it is visible
 	  public void appendText(String text, String source) {
 		  StyledDocument doc = UI.textPane.getStyledDocument();
-		  Color color  = Color.blue;
+		  Color color  = Color.black;
 		  
 		  if("c".equals(source)){
 			  color  = Color.blue;
 		  }
-		  else{
+		  if("s".equals(source)){
 			  color  = Color.red;
 		  }
 		  
